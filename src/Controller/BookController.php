@@ -2,13 +2,20 @@
 
 namespace App\Controller;
 
+use App\Repository\BookRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 class BookController extends AbstractController
 {
+    public function __construct(
+        protected BookRepository $bookRepository
+    ){
+
+    }
+
     #[Route('/book', name: 'app_book')]
     public function index(): JsonResponse
     {
@@ -21,13 +28,18 @@ class BookController extends AbstractController
     /**
      * @Route("/book/search", name="book_search", methods={"GET"})
      */
-    public function search(HttpClientInterface $httpClient): JsonResponse
+    public function search(): JsonResponse
     {
-        $response = $httpClient->request('GET', 'https://run.mocky.io/v3/d7f02fdc-5591-4080-a163-95a08ce6895e');
+        $books = $this->bookRepository->findAll();
 
-        // Get the JSON response body and decode it
-        $books = json_decode($response->getContent(), true);
+        $data = [];
+        foreach ($books as $book) {
+            $data[] = [
+                'id' => $book->getId(),
+                'title' => $book->getTitle()
+            ];
+        }
 
-        return new JsonResponse($books);
+        return new JsonResponse($data, Response::HTTP_OK);
     }
 }
