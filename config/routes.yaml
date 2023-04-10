@@ -1,0 +1,10 @@
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+
+book_search:
+    path: /book/search
+    controller: App\Controller\BookController::search
+    methods: GET
