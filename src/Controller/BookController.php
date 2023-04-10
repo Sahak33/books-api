@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\BookRepository;
+use App\Service\Book\BookService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -10,10 +11,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class BookController extends AbstractController
 {
+    protected BookService $bookService;
     public function __construct(
         protected BookRepository $bookRepository
     ){
-
+        $this->bookService = new BookService($this->bookRepository);
     }
 
     #[Route('/book', name: 'app_book')]
@@ -30,28 +32,8 @@ class BookController extends AbstractController
      */
     public function search(): JsonResponse
     {
-        $books = $this->bookRepository->findAll();
+        $books = $this->bookService->getAllBooks();
 
-        $data = [];
-        foreach ($books as $book) {
-            $cats = [];
-            foreach ($book->getBookCategories() as $cat){
-                $cats[] = $cat->getCategory()->getName();
-            }
-
-            $authors = [];
-            foreach ($book->getBookAuthors() as $author){
-                $authors[] = $author->getAuthor()->getName();
-            }
-
-            $data[] = [
-                'id' => $book->getId(),
-                'title' => $book->getTitle(),
-                'categories' => $cats,
-                'authors' => $authors
-            ];
-        }
-
-        return new JsonResponse($data, Response::HTTP_OK);
+        return new JsonResponse($books, Response::HTTP_OK);
     }
 }
