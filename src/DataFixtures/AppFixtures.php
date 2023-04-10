@@ -12,6 +12,7 @@ use App\Repository\BookRepository;
 use App\Repository\CategoryRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use DateTime;
 
 class AppFixtures extends Fixture
 {
@@ -29,7 +30,7 @@ class AppFixtures extends Fixture
         $manager = $this->fillRandomCategories($manager);
         $manager = $this->fillRandomAuthors($manager);
         $manager->flush();
-        // Please don't remove the duble "$manager->flush();" code it's done couse of important reason
+        // Please don't remove the duble "$manager->flush();" code it's done course of important reason
         $manager = $this->fillBookCategoryPivot($manager);
         $manager = $this->fillBookAuthorPivot($manager);
         $manager->flush();
@@ -38,8 +39,24 @@ class AppFixtures extends Fixture
     protected function fillRandomBooks($manager)
     {
         for ($i = 0; $i < 9; $i++) {
+            $date = new DateTime();
+            $randomTimestamp = mt_rand($date->modify('-10 years')->getTimestamp(), $date->getTimestamp());
+            $randomDateTime = new DateTime('@'.$randomTimestamp);
+            $formattedDateTime = $randomDateTime->format('Y-m-d\TH:i:s.uP');
+
             $item = new Book();
             $item->setTitle("Test title ".rand(100000, 999999));
+            $item->setIsbn(rand(1000000000, 9999999999));
+            $item->setPageCount(rand(5, 500));
+            $item->setPublished([
+                "date" => $formattedDateTime,
+                "price" => rand(10, 200),
+                "currency" => "USD"
+            ]);
+            $item->setThumbnailUrl("https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/ableson.jpg");
+            $item->setShortDescription("Description example"); // set random lorem ipsum text
+            $item->setStatus("PUBLISH");
+
             $manager->persist($item);
         }
 

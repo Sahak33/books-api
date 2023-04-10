@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Repository\BookRepository;
 use App\Service\Book\BookService;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,10 +14,13 @@ use Symfony\Component\HttpFoundation\Response;
 class BookController extends AbstractController
 {
     protected BookService $bookService;
+    private EntityManagerInterface $entityManager;
     public function __construct(
-        protected BookRepository $bookRepository
+        protected BookRepository $bookRepository,
+        EntityManagerInterface $entityManager
     ){
-        $this->bookService = new BookService($this->bookRepository);
+        $this->entityManager = $entityManager;
+        $this->bookService = new BookService($this->bookRepository, $this->entityManager);
     }
 
     #[Route('/book', name: 'app_book')]
@@ -30,9 +35,9 @@ class BookController extends AbstractController
     /**
      * @Route("/book/search", name="book_search", methods={"GET"})
      */
-    public function search(): JsonResponse
+    public function search(Request $request): JsonResponse
     {
-        $books = $this->bookService->getAllBooks();
+        $books = $this->bookService->getBooks($request);
 
         return new JsonResponse($books, Response::HTTP_OK);
     }

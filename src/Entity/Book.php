@@ -24,6 +24,24 @@ class Book
     #[ORM\OneToMany(mappedBy: 'Book', targetEntity: BookAuthor::class)]
     private Collection $bookAuthors;
 
+    #[ORM\Column(length: 255)]
+    private ?string $isbn = null;
+
+    #[ORM\Column]
+    private ?int $pageCount = null;
+
+    #[ORM\Column(nullable: true)]
+    private array $published = [];
+
+    #[ORM\Column(length: 255)]
+    private ?string $thumbnailUrl = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $shortDescription = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $status = null;
+
     public function __construct()
     {
         $this->bookCategories = new ArrayCollection();
@@ -103,6 +121,78 @@ class Book
                 $bookAuthor->setBook(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIsbn(): ?string
+    {
+        return $this->isbn;
+    }
+
+    public function setIsbn(string $isbn): self
+    {
+        $this->isbn = $isbn;
+
+        return $this;
+    }
+
+    public function getPageCount(): ?int
+    {
+        return $this->pageCount;
+    }
+
+    public function setPageCount(int $pageCount): self
+    {
+        $this->pageCount = $pageCount;
+
+        return $this;
+    }
+
+    public function getPublished(): array
+    {
+        return $this->published;
+    }
+
+    public function setPublished(?array $published): self
+    {
+        $this->published = $published;
+
+        return $this;
+    }
+
+    public function getThumbnailUrl(): ?string
+    {
+        return $this->thumbnailUrl;
+    }
+
+    public function setThumbnailUrl(string $thumbnailUrl): self
+    {
+        $this->thumbnailUrl = $thumbnailUrl;
+
+        return $this;
+    }
+
+    public function getShortDescription(): ?string
+    {
+        return $this->shortDescription;
+    }
+
+    public function setShortDescription(string $shortDescription): self
+    {
+        $this->shortDescription = $shortDescription;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }
