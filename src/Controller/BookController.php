@@ -34,9 +34,21 @@ class BookController extends AbstractController
 
         $data = [];
         foreach ($books as $book) {
+            $cats = [];
+            foreach ($book->getBookCategories() as $cat){
+                $cats[] = $cat->getCategory()->getName();
+            }
+
+            $authors = [];
+            foreach ($book->getBookAuthors() as $author){
+                $authors[] = $author->getAuthor()->getName();
+            }
+
             $data[] = [
                 'id' => $book->getId(),
-                'title' => $book->getTitle()
+                'title' => $book->getTitle(),
+                'categories' => $cats,
+                'authors' => $authors
             ];
         }
 

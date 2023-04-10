@@ -21,9 +21,13 @@ class Book
     #[ORM\OneToMany(mappedBy: 'Book', targetEntity: BookCategory::class)]
     private Collection $bookCategories;
 
+    #[ORM\OneToMany(mappedBy: 'Book', targetEntity: BookAuthor::class)]
+    private Collection $bookAuthors;
+
     public function __construct()
     {
         $this->bookCategories = new ArrayCollection();
+        $this->bookAuthors = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -67,6 +71,36 @@ class Book
             // set the owning side to null (unless already changed)
             if ($bookCategory->getBook() === $this) {
                 $bookCategory->setBook(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BookAuthor>
+     */
+    public function getBookAuthors(): Collection
+    {
+        return $this->bookAuthors;
+    }
+
+    public function addBookAuthor(BookAuthor $bookAuthor): self
+    {
+        if (!$this->bookAuthors->contains($bookAuthor)) {
+            $this->bookAuthors->add($bookAuthor);
+            $bookAuthor->setBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBookAuthor(BookAuthor $bookAuthor): self
+    {
+        if ($this->bookAuthors->removeElement($bookAuthor)) {
+            // set the owning side to null (unless already changed)
+            if ($bookAuthor->getBook() === $this) {
+                $bookAuthor->setBook(null);
             }
         }
 

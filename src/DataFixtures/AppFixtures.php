@@ -2,9 +2,12 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Author;
 use App\Entity\Book;
+use App\Entity\BookAuthor;
 use App\Entity\BookCategory;
 use App\Entity\Category;
+use App\Repository\AuthorRepository;
 use App\Repository\BookRepository;
 use App\Repository\CategoryRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -14,7 +17,8 @@ class AppFixtures extends Fixture
 {
     public function __construct(
         protected BookRepository $bookRepository,
-        protected CategoryRepository $categoryRepository
+        protected CategoryRepository $categoryRepository,
+        protected AuthorRepository $authorRepository
     ){
 
     }
@@ -23,9 +27,11 @@ class AppFixtures extends Fixture
     {
         $manager = $this->fillRandomBooks($manager);
         $manager = $this->fillRandomCategories($manager);
+        $manager = $this->fillRandomAuthors($manager);
         $manager->flush();
         // Please don't remove the duble "$manager->flush();" code it's done couse of important reason
         $manager = $this->fillBookCategoryPivot($manager);
+        $manager = $this->fillBookAuthorPivot($manager);
         $manager->flush();
     }
 
@@ -51,6 +57,17 @@ class AppFixtures extends Fixture
         return $manager;
     }
 
+    protected function fillRandomAuthors($manager)
+    {
+        for ($i = 0; $i < 5; $i++) {
+            $item = new Author();
+            $item->setName("Author".rand(100000, 999999));
+            $manager->persist($item);
+        }
+
+        return $manager;
+    }
+
     protected function fillBookCategoryPivot($manager)
     {
         $books = $this->bookRepository->findAll();
@@ -65,6 +82,26 @@ class AppFixtures extends Fixture
             $item = new BookCategory();
             $item->setBook($randomBook);
             $item->setCategory($randomCat);
+            $manager->persist($item);
+        }
+
+        return $manager;
+    }
+
+    protected function fillBookAuthorPivot($manager)
+    {
+        $books = $this->bookRepository->findAll();
+        $authors = $this->authorRepository->findAll();
+        for ($i = 0; $i < 5; $i++) {
+            $randomBookIndex = rand(0, count($books) - 1);
+            $randomAuthorIndex = rand(0, count($authors) - 1);
+
+            $randomBook = $books[$randomBookIndex];
+            $andomAuthor = $authors[$randomAuthorIndex];
+
+            $item = new BookAuthor();
+            $item->setBook($randomBook);
+            $item->setAuthor($andomAuthor);
             $manager->persist($item);
         }
 
