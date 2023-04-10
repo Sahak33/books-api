@@ -8,3 +8,8 @@ book_search:
     path: /book/search
     controller: App\Controller\BookController::search
     methods: GET
+
+book_show:
+    path: /book/show/{id}
+    controller: App\Controller\BookController::show
+    methods: GET

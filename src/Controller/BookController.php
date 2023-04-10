@@ -41,4 +41,14 @@ class BookController extends AbstractController
 
         return new JsonResponse($books, Response::HTTP_OK);
     }
+
+    /**
+     * @Route("/book/show/{id}", name="book_show", methods={"GET"})
+     */
+    public function show(int $id): JsonResponse
+    {
+        $data = $this->bookService->getBookById($id);
+
+        return new JsonResponse($data, Response::HTTP_OK);
+    }
 }

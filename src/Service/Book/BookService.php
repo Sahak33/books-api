@@ -19,6 +19,23 @@ class BookService
         $this->entityManager = $entityManager;
     }
 
+    public function getBookById(int $id) :array
+    {
+        $book = $this->bookRepository->find($id);
+
+        $data['id'] = $book->getId();
+        $data['title'] = $book->getTitle();
+        $data['isbn'] = $book->getIsbn();
+        $data['page_count'] = $book->getPageCount();
+        $data['thumbnail_url'] = $book->getThumbnailUrl();
+        $data['short_description'] = $book->getShortDescription();
+        $data['status'] = $book->getStatus();
+        $data['authors'] = $this->getBookAuthors($book);
+        $data['categories'] = $this->getBookCats($book);
+
+        return $data ?? [];
+    }
+
     public function getBooks(Request $request) :array
     {
         $params = $request->query->all();
@@ -37,8 +54,13 @@ class BookService
             $data[] = [
                 'id' => $book->getId(),
                 'title' => $book->getTitle(),
-                'categories' => $cats,
-                'authors' => $authors
+                'isbn' => $book->getIsbn(),
+                'page_count' => $book->getPageCount(),
+                'thumbnail_url' => $book->getThumbnailUrl(),
+                'short_description' => $book->getShortDescription(),
+                'status' => $book->getStatus(),
+                'authors' => $authors,
+                'categories' => $cats
             ];
         }
 
