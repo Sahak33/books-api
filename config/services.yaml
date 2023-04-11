@@ -21,6 +21,15 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
+    # service definition for BookRepository
+    App\Repository\BookRepository:
+        public: true
+        arguments:
+            $registry: '@doctrine'
+
     # service definition for BookService
     App\Services\Book\BookService:
+#        public: true
+#        arguments:
+#            $bookRepository: '@App\Repository\BookRepository'
         tags: ['app.book_service']
