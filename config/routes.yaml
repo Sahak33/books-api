@@ -1,15 +1,30 @@
-controllers:
-    resource:
-        path: ../src/Controller/
-        namespace: App\Controller
-    type: attribute
+#controllers:
+#    resource:
+#        path: ../src/Controller/
+#        namespace: App\Controller
+#    type: attribute
+#
+#book_search:
+#    path: /book/search
+#    controller: App\Controller\BookController::search
+#    methods: GET
+#
+#book_show:
+#    path: /book/show/{id}
+#    controller: App\Controller\BookController::show
+#    methods: GET
 
-book_search:
-    path: /book/search
+api_book_search:
+    path: /api/book/search
     controller: App\Controller\BookController::search
     methods: GET
 
-book_show:
-    path: /book/show/{id}
+api_book_show:
+    path: /api/book/show/{id}
     controller: App\Controller\BookController::show
+    methods: GET
+
+api_category:
+    path: /api/category
+    controller: App\Controller\CategoryController::index
     methods: GET

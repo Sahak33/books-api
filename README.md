@@ -22,3 +22,7 @@ seed db
 1. php bin/console doctrine:fixtures:load
 
 endpoints in routes.yaml file
+
+IMPORTANT
+If occured errors about the migrations, empty this folder "migrations/" remove the generated migrations and run this 
+command again `php bin/console make:migration` and after this `php bin/console doctrine:migration:migrate`
