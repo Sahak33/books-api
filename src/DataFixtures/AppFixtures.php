@@ -65,9 +65,17 @@ class AppFixtures extends Fixture
 
     protected function fillRandomCategories($manager)
     {
-        for ($i = 0; $i < 5; $i++) {
+        $cats_arr = [
+            'Java',
+            'Software enginiering',
+            'Develop',
+            'Hesoyam',
+            'Aezakmi',
+            'Lorem ipsum'
+        ];
+        for ($i = 0; $i < count($cats_arr); $i++) {
             $item = new Category();
-            $item->setName("Cat".rand(100000, 999999));
+            $item->setName($cats_arr[$i]);
             $manager->persist($item);
         }
 

@@ -23,6 +23,10 @@ class BookService
     {
         $book = $this->bookRepository->find($id);
 
+        if(!$book){
+            return [];
+        }
+
         $data['id'] = $book->getId();
         $data['title'] = $book->getTitle();
         $data['isbn'] = $book->getIsbn();
