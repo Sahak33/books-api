@@ -42,6 +42,9 @@ class Book
     #[ORM\Column(length: 255)]
     private ?string $status = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $longDescription = null;
+
     public function __construct()
     {
         $this->bookCategories = new ArrayCollection();
@@ -193,6 +196,18 @@ class Book
     public function setStatus(string $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getLongDescription(): ?string
+    {
+        return $this->longDescription;
+    }
+
+    public function setLongDescription(?string $longDescription): self
+    {
+        $this->longDescription = $longDescription;
 
         return $this;
     }

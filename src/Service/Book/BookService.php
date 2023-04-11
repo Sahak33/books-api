@@ -31,8 +31,10 @@ class BookService
         $data['title'] = $book->getTitle();
         $data['isbn'] = $book->getIsbn();
         $data['page_count'] = $book->getPageCount();
+        $data['published'] = $book->getPublished();
         $data['thumbnail_url'] = $book->getThumbnailUrl();
         $data['short_description'] = $book->getShortDescription();
+        $data['long_description'] = $book->getLongDescription();
         $data['status'] = $book->getStatus();
         $data['authors'] = $this->getBookAuthors($book);
         $data['categories'] = $this->getBookCats($book);
@@ -60,8 +62,10 @@ class BookService
                 'title' => $book->getTitle(),
                 'isbn' => $book->getIsbn(),
                 'page_count' => $book->getPageCount(),
+                'published' => $book->getPublished(),
                 'thumbnail_url' => $book->getThumbnailUrl(),
                 'short_description' => $book->getShortDescription(),
+                'long_description' => $book->getLongDescription(),
                 'status' => $book->getStatus(),
                 'authors' => $authors,
                 'categories' => $cats

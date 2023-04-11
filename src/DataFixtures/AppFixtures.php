@@ -54,7 +54,8 @@ class AppFixtures extends Fixture
                 "currency" => "USD"
             ]);
             $item->setThumbnailUrl("https://s3.amazonaws.com/AKIAJC5RLADLUMVRPFDQ.book-thumb-images/ableson.jpg");
-            $item->setShortDescription("Description example"); // set random lorem ipsum text
+            $item->setShortDescription("Description example");
+            $item->setLongDescription("Long description example");
             $item->setStatus("PUBLISH");
 
             $manager->persist($item);
