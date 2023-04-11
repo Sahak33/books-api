@@ -11,7 +11,7 @@ class BookTest extends WebTestCase
         $client = static::createClient();
         $router = $client->getContainer()->get('router');
 
-        $url = $router->generate('api_book_search', ['id' => 1]);
+        $url = $router->generate('api_book_search');
 
         $client->request('GET', $url);
         $response = $client->getResponse();

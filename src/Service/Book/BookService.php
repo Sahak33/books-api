@@ -80,9 +80,7 @@ class BookService
         // Get the filtered books
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder->select('b')
-            ->from(Book::class, 'b')
-            ->join(BookCategory::class, 'bc', 'WITH', 'b.id = bc.Book')
-            ->join(Category::class, 'c', 'WITH', 'c.id = bc.Category');
+            ->from(Book::class, 'b');
 
         $price = $filters['price'] ?? false;
         if ($price) {
@@ -91,7 +89,9 @@ class BookService
 
         $category = $filters['category'] ?? false;
         if ($category) {
-            $queryBuilder->andWhere('c.name = :category')
+            $queryBuilder->join(BookCategory::class, 'bc', 'WITH', 'b.id = bc.Book')
+                ->join(Category::class, 'c', 'WITH', 'c.id = bc.Category')
+                ->andWhere('c.name = :category')
                 ->setParameter('category', $category);
         }
 
