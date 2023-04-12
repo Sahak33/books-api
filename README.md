@@ -1,28 +1,37 @@
 Installation steps
 
-1. composer i
+1. `composer i`
+2. `composer u`
 
-required packages`
+copy `.env.example` file and make `.env` and `.env.test` files
 
-composer require orm
-composer require --dev orm-fixtures
-composer require --dev doctrine/doctrine-fixtures-bundle
-composer require symfony/maker-bundle --dev
-composer require symfony/console
-composer require symfony/maker-bundle --dev
-composer require fzaninotto/faker
+Warning, you have to create also test database for unit tests `yourdbname_test`
 
-make migrations 
+make migrations for common db
 
-1. php bin/console make:migration
-2. php bin/console doctrine:migration:migrate
+1. `php bin/console make:migration`
+2. `php bin/console doctrine:migration:migrate`
+
+make migration for test db
+
+1. `php bin/console doctrine:migrations:migrate --env=test`
 
 seed db
 
-1. php bin/console doctrine:fixtures:load
+1. `php bin/console doctrine:fixtures:load`
 
-endpoints in routes.yaml file
+seed test db
 
-IMPORTANT
-If occured errors about the migrations, empty this folder "migrations/" remove the generated migrations and run this 
-command again `php bin/console make:migration` and after this `php bin/console doctrine:migration:migrate`
+1. `php bin/console doctrine:fixtures:load --env=test`
+
+Unit test command `./vendor/bin/phpunit` if command not running try this commands
+
+1. `composer require --dev phpunit/phpunit` if not worked `composer require --dev symfony/browser-kit`
+2. `composer i`
+
+Run project with symfony server
+1. `composer global require symfony/cli`
+2. `export PATH="$PATH:$HOME/.composer/vendor/bin"`
+
+Make sure that symfony CLI installed successfully with running this command `symfony --version`, if you see the version
+try to run the project with this command `symfony server:start` if want to stop the server run this `symfony server:stop`
