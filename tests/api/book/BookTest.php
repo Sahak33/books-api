@@ -103,4 +103,19 @@ class BookTest extends WebTestCase
 
         $this->assertTrue(count($result) > 0);
     }
+
+    public function testShowBook()
+    {
+        $client = static::createClient();
+        $router = $client->getContainer()->get('router');
+        $url = $router->generate('api_book_search');
+        $client->request('GET', $url);
+        $response = $client->getResponse();
+        $books = json_decode($response->getContent());
+        $url = $router->generate('api_book_show', ['id' => $books[0]->id]);
+        $client->request('GET', $url);
+        $response = $client->getResponse();
+        $result = json_decode($response->getContent());
+        $this->assertEquals($books[0]->title, $result->title);
+    }
 }

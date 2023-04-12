@@ -8,6 +8,8 @@
 /var/
 /vendor/
 /migrations/
+/.idea
+/.phpunit.cache
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
